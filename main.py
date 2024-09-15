@@ -16,3 +16,4 @@ while True:
         else:
             print('повнолітній')
         break
+
