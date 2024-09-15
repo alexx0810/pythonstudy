@@ -17,3 +17,4 @@ while True:
             print('повнолітній')
         break
 
+print('hello world')
