@@ -1,8 +1,11 @@
+import random  # Не забудь імпортувати random
+
 class Character:
     name = ''
     health = 100
     damage = 1
     defence = 0
+    damage_offset = 0.2  # Додано новий параметр
 
     def __init__(self, name, health, damage, defence):
         self.name = name
@@ -25,4 +28,6 @@ class Character:
         return real_damage
 
     def attack(self, target):
-        return target.take_damage(self.damage)
+        real_offset = random.randint(0, int(self.damage * self.damage_offset)) * random.choice([-1, 1])
+        actual_damage = self.damage + real_offset
+        return target.take_damage(actual_damage)
