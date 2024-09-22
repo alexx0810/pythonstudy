@@ -1,7 +1,12 @@
 from character import Character
 
-player1 = Character("Vasya", 100, 10, 2)
-player2 = Character("Petya", 100, 8, 3)
+def attack_message(attacker: Character, target: Character, damage_done: float):
+    return (f'{attacker.name} атакував {target.name}.\n'
+            f'{attacker.name} наніс {damage_done} шкоди.\n'
+            f'У {target.name} залишилося {target.health} здоров\'я.\n')
+
+player1 = Character("Vasya", 100, 20, 150)
+player2 = Character("Petya", 100, 20, 10)
 
 print(f"Створено нового персонажа: {player1.name}")
 print(f"Створено нового персонажа: {player2.name}")
@@ -9,27 +14,14 @@ print(f"Створено нового персонажа: {player2.name}")
 player1.show_stats()
 player2.show_stats()
 
-def perform_attack(attacker, defender):
-    effective_damage = max(0, attacker.damage - defender.defence)
-    defender.health -= effective_damage
-    print(f"{attacker.name} атакує {defender.name}, наносячи {effective_damage} шкоди!")
-    if defender.health <= 0:
-        print(f"{defender.name} було переможено!")
-    else:
-        print(f"У {defender.name} залишилося {defender.health} здоров'я.")
-
-
 while player1.health > 0 and player2.health > 0:
-    perform_attack(player1, player2)
-    if player2.health <= 0:
-        break
+    damage_done = player1.attack(player2)
+    print(attack_message(player1, player2, damage_done))
 
-    perform_attack(player2, player1)
-    if player1.health <= 0:
-        break
+    damage_done = player2.attack(player1)
+    print(attack_message(player2, player1, damage_done))
 
-print(f"\nБитва закінчена!")
-player1.show_stats()
-player2.show_stats()
+print(f"{player1}\n{player2}")
+
 
 
