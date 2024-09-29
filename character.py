@@ -1,11 +1,11 @@
-import random  # Не забудь імпортувати random
+import random
 
 class Character:
     name = ''
     health = 100
     damage = 1
     defence = 0
-    damage_offset = 0.2  # Додано новий параметр
+    damage_offset = 0.2
 
     def __init__(self, name, health, damage, defence):
         self.name = name
@@ -17,17 +17,24 @@ class Character:
         print(self)
 
     def __str__(self):
-        return (f' -< {self.name} >-\n'
-                f'Здоров\'я: {self.health}\n'
-                f'Шкода: {self.damage}\n'
-                f'Захист: {self.defence}\n')
+        return f' -< {self.name} >-\n' \
+               f' Здоров`я: {self.health}\n'\
+               f' Шкода: {self.damage}\n'\
+               f' Захист: {self.defence}\n'
+
+    def count_incoming_damage(self, damage):
+        return round(max(damage * ((100 - self.defence) / 100), 0), 2)
+
+    def count_damage_offset(self):
+        return random.randint(0, int(self.damage * self.damage_offset)) * random.choice((-1, 1))
+
+    def is_alive(self):
+        return self.health > 0
 
     def take_damage(self, damage):
-        real_damage = round(damage * ((100 - self.defence) / 100), 2)
+        real_damage = self.count_incoming_damage(damage)
         self.health = round(max(self.health - real_damage, 0), 2)
         return real_damage
 
     def attack(self, target):
-        real_offset = random.randint(0, int(self.damage * self.damage_offset)) * random.choice([-1, 1])
-        actual_damage = self.damage + real_offset
-        return target.take_damage(actual_damage)
+        return target.take_damage(self.damage + self.count_damage_offset())
